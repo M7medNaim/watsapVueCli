@@ -2,22 +2,66 @@
   <div class="col-0 col-md-8 boxChat" v-if="selectedChat">
     <div class="right-side">
       <div class="header">
-        <div class="user-details">
-          <div class="user-imgBx">
-            <img
-              :src="selectedChat.img"
-              alt=""
-              class="img-fluid rounded-circle"
-            />
+        <div class="row">
+          <div class="col-6">
+            <div
+              class="user-details d-flex justify-content-start align-items-center"
+            >
+              <div class="user-imgBx">
+                <img
+                  :src="selectedChat.img"
+                  alt=""
+                  class="img-fluid rounded-circle"
+                />
+              </div>
+              <h6 class="pt-1">{{ selectedChat.name }} <br /></h6>
+            </div>
           </div>
-          <h5 class="pt-1">
-            {{ selectedChat.name }} <br />
-            <span>Online</span>
-          </h5>
+          <div class="col-6">
+            <div
+              class="search_list d-flex justify-content-end align-items-center gap-3 fs-5"
+            >
+              <div id="bxSearch" class="d-flex">
+                <div
+                  class="searchInput align-items-center"
+                  :class="{ 'show-search': isSearchBarVisible }"
+                >
+                  <input
+                    type="text"
+                    name="searchChat"
+                    id="searchChat"
+                    class="ms-3"
+                    placeholder="... Search Here"
+                  />
+                </div>
+                <button @click="toggleSearchInput()">
+                  <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+                </button>
+              </div>
+              <button @click="showList()">
+                <i
+                  class="fa-solid fa-ellipsis-vertical"
+                  style="color: #5a5757"
+                ></i>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="chatBx">
+        <div
+          class="menu align-items-center"
+          :class="{ 'show-list': showListVisible }"
+        >
+          <ul>
+            <li><a href="#">Archive Chat</a></li>
+            <li><a href="#">Pin Chat</a></li>
+            <li><a href="#">Label Chat</a></li>
+            <li><a href="#">Mark as Unread</a></li>
+            <li><a href="#">Block, Delete Chat</a></li>
+          </ul>
+        </div>
         <p class="date">اليوم</p>
         <div
           class="msg"
@@ -50,6 +94,8 @@ export default {
   },
   data() {
     return {
+      isSearchBarVisible: false,
+      showListVisible: false,
       newMessage: "",
       localSelectedChat: { ...this.selectedChat },
     };
@@ -79,6 +125,12 @@ export default {
       };
 
       this.localSelectedChat.messages.push(newMessage);
+    },
+    toggleSearchInput() {
+      this.isSearchBarVisible = !this.isSearchBarVisible;
+    },
+    showList() {
+      this.showListVisible = !this.showListVisible;
     },
 
     setActiveChat() {
@@ -111,32 +163,51 @@ export default {
   height: 95vh;
 }
 .right-side .header {
+  position: relative;
   background-color: #d3d1d1;
-  height: 10vh;
-  padding: 10px 10px;
-  /* margin-top: 9px; */
+  height: 8vh;
+  padding: 5px 10px;
+  border-right: 1px solid #b8b6b6;
 }
 
 .right-side .header .user-details {
-  display: flex;
-  justify-content: start;
-  align-items: start;
   gap: 10px;
+  height: 8vh;
 }
 
 .right-side .header .user-details .user-imgBx {
-  width: 60px;
-  height: 60px;
+  width: 45px;
+  height: 45px;
 }
 
-.right-side .header .user-details .user-imgBx {
-  width: 60px;
-  height: 60px;
+.right-side .header .user-details .user-imgBx img {
+  width: 45px;
+  height: 45px;
 }
-
-.right-side .header .user-details h5 span {
-  font-size: 0.8rem;
-  color: #555;
+.search_list {
+  height: 8vh;
+}
+.search_list #bxSearch input {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  padding: 5px 10px;
+  font-size: 14px;
+  width: 350px;
+}
+.searchInput {
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+.searchInput.show-search {
+  opacity: 1;
+  visibility: visible;
+}
+.search_list #bxSearch .searchIcon {
+  cursor: pointer;
+  color: #5a5757;
 }
 
 /* chat box */
@@ -144,13 +215,47 @@ export default {
 .right-side .chatBx {
   position: relative;
   width: 100%;
-  height: 79vh;
+  height: calc(87vh - 60px);
   padding: 50px;
   overflow-y: auto;
   background-color: #efddd5;
   background-image: url("../../public/img/pattern.png");
   background-size: contain;
   background-position: center;
+}
+
+.right-side .chatBx .menu {
+  position: fixed;
+  top: 12.5%;
+  left: 1%;
+  z-index: 999;
+  background-color: #eee;
+  border-radius: 10px;
+  text-align: end;
+  line-height: 30px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.5s;
+}
+
+.right-side .chatBx .menu.show-list {
+  opacity: 1;
+  visibility: visible;
+}
+
+.right-side .chatBx .menu ul {
+  padding-left: 0;
+}
+.right-side .chatBx .menu ul li {
+  padding: 10px 10px 10px 20px;
+  transition: all 0.2s;
+}
+.right-side .chatBx .menu ul li:hover {
+  background-color: #fff;
+}
+.right-side .chatBx .menu ul li a {
+  text-decoration: none;
+  color: #000;
 }
 
 .right-side .chatBx p.date {
@@ -160,10 +265,10 @@ export default {
   right: 50%;
   text-align: center;
   z-index: 999;
-  background-color: #817d7d;
+  background-color: #787676;
   width: fit-content;
   color: #fff;
-  padding: 3px;
+  padding: 3px 12px;
   border-radius: 10px;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
@@ -186,7 +291,11 @@ export default {
   padding: 12px;
   background: #dcf8c6;
   border-radius: 10px;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  line-height: 1.5;
 }
 
 .right-side .chatBx .msg-me p::before {
@@ -230,5 +339,22 @@ export default {
   border-left: 10px solid #fff;
   border-bottom: 10px solid transparent;
   border-right: 10px solid transparent;
+}
+/* scroll style */
+.right-side .chatBx::-webkit-scrollbar {
+  width: 10px;
+}
+
+.right-side .chatBx::-webkit-scrollbar-track {
+  background: #edebeb97;
+}
+
+.right-side .chatBx::-webkit-scrollbar-thumb {
+  background: #6d6c6ca7;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
 }
 </style>

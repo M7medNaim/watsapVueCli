@@ -1,9 +1,11 @@
 <template>
-  <div class="chat-input pb-4">
-    <button type="submit" @click="toggleEmoji">
+  <div
+    class="chat-input pb-4 d-flex justify-content-between align-items-center w-100"
+  >
+    <button type="submit" @click="toggleEmoji" class="pt-2">
       <i class="fa-regular fa-face-smile"></i>
     </button>
-    <div class="upload_file">
+    <div class="upload_file pt-2">
       <label for="file" class="upload-label">
         <i class="fa-solid fa-paperclip upload-icon pt-2"></i>
       </label>
@@ -18,7 +20,7 @@
       id="inputMassege"
       v-model="newMessage"
     />
-    <button type="submit" class="submitMsg" @click="sendMessage">
+    <button type="submit" class="submitMsg pt-2" @click="sendMessage">
       <i ref="voiceIcon" class="fa-solid fa-microphone" id="voiceIcon"></i>
       <i ref="sendIcon" class="fa-solid fa-paper-plane" id="sendIcon"></i>
     </button>
@@ -64,13 +66,9 @@ export default {
 /* chat input */
 .right-side .chat-input {
   position: relative;
-  width: 100%;
   height: 60px;
   background: #f0f0f0;
   padding: 15px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .right-side .chat-input i {
@@ -86,12 +84,13 @@ export default {
 .right-side .chat-input input {
   position: relative;
   width: 90%;
-  margin: 0 20px 7px 20px;
+  margin: 8px 20px 0px 15px;
   padding: 10px 20px;
   border: none;
   outline: none;
-  border-radius: 30px;
+  border-radius: 10px;
   font-size: 1rem;
+  box-shadow: 2px 2px 5px rgba(14, 14, 14, 0.1);
 }
 
 .right-side .chat-input .file-upload {

@@ -1,9 +1,13 @@
 <template>
   <div class="col-12 col-md-4 chatResponsive">
     <div class="left-side">
+      <div class="inputSearch w-100 mb-2 mt-4 text-center">
+        <input type="text" placeholder="... Search Chat" />
+        <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+      </div>
       <div class="chat-list">
         <div
-          class="chat"
+          class="chat d-flex justify-content-end align-items-center"
           v-for="(chat, index) in chats"
           :key="index"
           @click="openChat(chat, index)"
@@ -17,7 +21,7 @@
               <h4 class="name">{{ chat.name }}</h4>
               <span class="time">{{ chat.time }}</span>
             </div>
-            <div class="msgs">
+            <div class="msgs d-flex justify-content-between align-items-center">
               <p class="msg pe-2">{{ chat.message }}</p>
               <b
                 class="num"
@@ -110,9 +114,37 @@ export default {
   padding-right: 0;
 }
 .left-side {
-  background-color: #fff;
+  background-color: #d3d1d1;
   height: 95vh;
   padding-top: 10px;
+}
+.left-side .inputSearch {
+  position: relative;
+}
+.left-side .inputSearch .searchIcon {
+  position: absolute;
+  right: 7%;
+  top: 30%;
+  font-size: 18px;
+  color: #737070;
+}
+.left-side .inputSearch input {
+  outline: none;
+  border: 1px solid #ffffff;
+  padding: 10px 35px 10px 10px;
+  background-color: #f4f3f3;
+  width: 90%;
+  height: 40px;
+  border-radius: 10px;
+  color: #737070;
+  transition: all 0.3s;
+}
+.left-side .inputSearch input::placeholder {
+  color: #585656ab;
+  font-size: 14px;
+}
+.left-side .inputSearch input:focus {
+  border: 1px solid #a28484ab;
 }
 
 /* left sidebar  */
@@ -121,13 +153,27 @@ export default {
   overflow-y: auto;
   height: 100%;
 }
+/* scroll style */
+.left-side .chat-list::-webkit-scrollbar {
+  width: 10px;
+}
+
+.left-side .chat-list::-webkit-scrollbar-track {
+  background: #edebeb97;
+}
+
+.left-side .chat-list::-webkit-scrollbar-thumb {
+  background: #6d6c6ca7;
+  border-radius: 8px;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -ms-border-radius: 8px;
+  -o-border-radius: 8px;
+}
 
 .left-side .chat-list .chat {
   position: relative;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: end;
   padding: 15px 15px 10px 15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
@@ -167,7 +213,6 @@ export default {
 .left-side .chat-list .chat .details .head {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 5px;
 }
 
 .left-side .chat-list .chat .details .head .name {
@@ -184,12 +229,6 @@ export default {
 
 .left-side .chat-list .chat.active .details .head .time {
   color: #111;
-}
-
-.left-side .chat-list .chat .details .msgs {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .left-side .chat-list .chat .details .msg {
