@@ -2,15 +2,50 @@
   <div
     class="chat-input pb-4 d-flex justify-content-between align-items-center w-100"
   >
-    <button type="submit" @click="toggleEmoji" class="pt-2">
+    <button type="submit" @click="toggleEmoji" class="pt-2" aria-label="Emojis">
       <i class="fa-regular fa-face-smile"></i>
     </button>
+    <div v-if="isEmojiVisible" class="emoji-picker">
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😂')">😂</span>
+      <span @click="addEmoji('😍')">😍</span>
+      <span @click="addEmoji('😎')">😎</span>
+      <span @click="addEmoji('😢')">😢</span>
+      <span @click="addEmoji('😡')">😡</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😂')">😂</span>
+      <span @click="addEmoji('😍')">😍</span>
+      <span @click="addEmoji('😎')">😎</span>
+      <span @click="addEmoji('😢')">😢</span>
+      <span @click="addEmoji('😡')">😡</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😂')">😂</span>
+      <span @click="addEmoji('😍')">😍</span>
+      <span @click="addEmoji('😎')">😎</span>
+      <span @click="addEmoji('😢')">😢</span>
+      <span @click="addEmoji('😡')">😡</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😍')">😍</span>
+      <span @click="addEmoji('😎')">😎</span>
+      <span @click="addEmoji('😢')">😢</span>
+      <span @click="addEmoji('😡')">😡</span>
+      <span @click="addEmoji('😀')">😀</span>
+      <span @click="addEmoji('😀')">😀</span>
+    </div>
     <div class="upload_file pt-2">
       <label for="file" class="upload-label">
         <i class="fa-solid fa-paperclip upload-icon pt-2"></i>
       </label>
       <form action="" autocomplete="off">
-        <input type="file" id="file" class="file-upload" autocomplete="off" />
+        <input
+          type="file"
+          id="file"
+          class="file-upload"
+          autocomplete="off"
+          aria-label="uploadFile"
+        />
       </form>
     </div>
     <input
@@ -20,9 +55,24 @@
       id="inputMassege"
       v-model="newMessage"
     />
-    <button type="submit" class="submitMsg pt-2" @click="sendMessage">
-      <i ref="voiceIcon" class="fa-solid fa-microphone" id="voiceIcon"></i>
-      <i ref="sendIcon" class="fa-solid fa-paper-plane" id="sendIcon"></i>
+    <button
+      type="submit"
+      class="submitMsg pt-2"
+      @click="sendMessage"
+      aria-label="sendMessage && voiceMessage"
+    >
+      <i
+        ref="voiceIcon"
+        class="fa-solid fa-microphone d-block"
+        id="voiceIcon"
+        v-if="newMessage.trim() === ''"
+      ></i>
+      <i
+        ref="sendIcon"
+        class="fa-solid fa-paper-plane d-block position-relative"
+        id="sendIcon"
+        v-if="newMessage.trim() !== ''"
+      ></i>
     </button>
   </div>
 </template>
@@ -33,23 +83,8 @@ export default {
   data() {
     return {
       newMessage: "",
+      isEmojiVisible: false,
     };
-  },
-  mounted() {
-    let messageInput = this.$refs.messageInput;
-    let voiceIcon = this.$refs.voiceIcon;
-    let sendIcon = this.$refs.sendIcon;
-
-    messageInput.addEventListener("input", () => {
-      if (messageInput.value.trim() !== "") {
-        voiceIcon.style.display = "none";
-        sendIcon.style.display = "block";
-        sendIcon.style.position = "relative";
-      } else {
-        voiceIcon.style.display = "block";
-        sendIcon.style.display = "none";
-      }
-    });
   },
   methods: {
     sendMessage() {
@@ -58,11 +93,44 @@ export default {
         this.newMessage = "";
       }
     },
-    toggleEmoji() {},
+    toggleEmoji() {
+      this.isEmojiVisible = !this.isEmojiVisible;
+    },
+    addEmoji(emoji) {
+      this.newMessage += emoji;
+      this.isEmojiVisible = false;
+    },
   },
 };
 </script>
 <style scoped>
+/* list emoji style */
+.emoji-picker {
+  position: absolute;
+  bottom: 60px;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px 10px 10px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  font-size: 20px;
+  width: fit-content;
+  text-align: center;
+}
+
+.emoji-picker span {
+  cursor: pointer;
+  width: 10%;
+  transition: transform 0.2s;
+}
+
+.emoji-picker span:hover {
+  transform: scale(1.2);
+}
+
 /* chat input */
 .right-side .chat-input {
   position: relative;

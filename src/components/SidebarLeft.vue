@@ -2,13 +2,17 @@
   <div class="col-12 col-md-4 chatResponsive">
     <div class="left-side">
       <div class="inputSearch w-100 mb-2 mt-4 text-center">
-        <input type="text" placeholder="... Search Chat" />
+        <input
+          type="text"
+          placeholder="... Search Chat"
+          v-model="searchQuery"
+        />
         <i class="fa-solid fa-magnifying-glass searchIcon"></i>
       </div>
       <div class="chat-list">
         <div
           class="chat d-flex justify-content-end align-items-center"
-          v-for="(chat, index) in chats"
+          v-for="(chat, index) in filteredChats"
           :key="index"
           @click="openChat(chat, index)"
           :class="{ active: chat.isActive }"
@@ -26,10 +30,15 @@
               <b
                 class="num"
                 :class="{ unread: chat.unread }"
-                v-if="chat.unread && chat.unreadCount > 0"
+                v-if="chat.unread"
               >
                 {{ chat.unreadCount }}
               </b>
+              <i
+                v-if="chat.pinned"
+                class="fa-solid fa-thumbtack pin-icon"
+                title="Pinned Chat"
+              ></i>
             </div>
           </div>
         </div>
@@ -43,6 +52,7 @@ export default {
   name: "SidebarLeft",
   data() {
     return {
+      searchQuery: "",
       chats: [
         {
           img: require("@/assets/img/img6.jpg"),
@@ -52,6 +62,7 @@ export default {
           unread: true,
           unreadCount: 3,
           isActive: false,
+          pinned: false,
           messages: [
             { type: "msg-me", text: "مرحباً!", time: "12:15" },
             { type: "msg-frnd", text: "أهلاً بك", time: "12:16" },
@@ -77,6 +88,7 @@ export default {
           unread: false,
           unreadCount: 0,
           isActive: false,
+          pinned: false,
           messages: [
             { type: "msg-me", text: "كيف حالك؟", time: "10:30" },
             { type: "msg-frnd", text: "أنا بخير", time: "10:31" },
@@ -93,6 +105,29 @@ export default {
       ],
     };
   },
+  computed: {
+    filteredChats() {
+      if (!this.searchQuery) {
+        return this.chats.slice().sort((a, b) => {
+          if (a.pinned && !b.pinned) return -1;
+          if (!a.pinned && b.pinned) return 1;
+          return 0;
+        });
+      }
+
+      return this.chats
+        .filter((chat) => {
+          const lowerQuery = this.searchQuery.toLowerCase();
+          return chat.name.toLowerCase().includes(lowerQuery);
+          // chat.message.toLowerCase().includes(lowerQuery)
+        })
+        .sort((a, b) => {
+          if (a.pinned && !b.pinned) return -1;
+          if (!a.pinned && b.pinned) return 1;
+          return 0;
+        });
+    },
+  },
   methods: {
     openChat(chat, index) {
       this.chats.forEach((item) => {
@@ -103,6 +138,41 @@ export default {
       this.chats[index].unread = false;
       this.chats[index].unreadCount = 0;
       this.$emit("select-chat", chat);
+    },
+    markAsUnread(chat) {
+      chat.unread = true;
+      chat.unreadCount = "";
+    },
+    pinChat(chat) {
+      const activeChat = this.chats.find((c) => c.isActive);
+
+      chat.pinned = !chat.pinned;
+
+      this.chats = this.chats.slice().sort((a, b) => {
+        if (a.pinned && !b.pinned) return -1;
+        if (!a.pinned && b.pinned) return 1;
+        return 0;
+      });
+
+      if (!chat.pinned) {
+        const pinnedChat = this.chats.find((c) => c.pinned);
+        if (pinnedChat) {
+          this.chats.forEach((c) => (c.isActive = false));
+          pinnedChat.isActive = true;
+        } else {
+          if (activeChat) {
+            const activeIndex = this.chats.findIndex(
+              (c) => c.id === activeChat.id
+            );
+            if (activeIndex !== -1) {
+              this.chats[activeIndex].isActive = true;
+            }
+          }
+        }
+      } else {
+        this.chats.forEach((chat) => (chat.isActive = false));
+        chat.isActive = true;
+      }
     },
   },
 };

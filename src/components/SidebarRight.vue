@@ -31,14 +31,18 @@
                     name="searchChat"
                     id="searchChat"
                     class="ms-3"
+                    v-model="searchQuery"
                     placeholder="... Search Here"
                   />
                 </div>
-                <button @click="toggleSearchInput()">
+                <button
+                  @click="toggleSearchInput()"
+                  aria-label="search in chat"
+                >
                   <i class="fa-solid fa-magnifying-glass searchIcon"></i>
                 </button>
               </div>
-              <button @click="showList()">
+              <button @click.stop="showList()" aria-label="list chat (menu)">
                 <i
                   class="fa-solid fa-ellipsis-vertical"
                   style="color: #5a5757"
@@ -49,23 +53,29 @@
         </div>
       </div>
 
-      <div class="chatBx">
+      <div class="chatBx" ref="chatBox">
         <div
+          ref="menu"
+          v-click-outside="closeMenu"
           class="menu align-items-center"
           :class="{ 'show-list': showListVisible }"
         >
           <ul>
             <li><a href="#">Archive Chat</a></li>
-            <li><a href="#">Pin Chat</a></li>
+            <li><a href="#" @click="handlePinChat">Pin Chat</a></li>
             <li><a href="#">Label Chat</a></li>
-            <li><a href="#">Mark as Unread</a></li>
+            <li>
+              <a href="#" @click="$emit('mark-as-unread', chat)"
+                >Mark as Unread</a
+              >
+            </li>
             <li><a href="#">Block, Delete Chat</a></li>
           </ul>
         </div>
         <p class="date">اليوم</p>
         <div
           class="msg"
-          v-for="(message, index) in messages"
+          v-for="(message, index) in filteredMessages"
           :key="index"
           :class="message.type"
         >
@@ -85,6 +95,7 @@
 import MessageInput from "@/components/MessageInput.vue";
 
 export default {
+  emits: ["mark-as-unread", "pin-chat"],
   components: {
     MessageInput,
   },
@@ -97,6 +108,7 @@ export default {
       isSearchBarVisible: false,
       showListVisible: false,
       newMessage: "",
+      searchQuery: "",
       localSelectedChat: { ...this.selectedChat },
     };
   },
@@ -112,6 +124,17 @@ export default {
     messages() {
       return this.localSelectedChat?.messages || [];
     },
+    filteredMessages() {
+      if (!this.searchQuery) {
+        return this.messages;
+      }
+
+      return this.messages.filter((message) => {
+        return message.text
+          .toLowerCase()
+          .includes(this.searchQuery.toLowerCase());
+      });
+    },
   },
   methods: {
     receiveMessage(message) {
@@ -125,29 +148,53 @@ export default {
       };
 
       this.localSelectedChat.messages.push(newMessage);
+      this.scrollToBottom();
     },
+    scrollToBottom() {
+      this.$nextTick(() => {
+        const chatMessages = this.$refs.chatBox.querySelectorAll(".msg");
+        const lastMessage = chatMessages[chatMessages.length - 1];
+        if (lastMessage) {
+          lastMessage.scrollIntoView({ behavior: "smooth", block: "end" });
+        }
+      });
+    },
+
     toggleSearchInput() {
       this.isSearchBarVisible = !this.isSearchBarVisible;
     },
     showList() {
       this.showListVisible = !this.showListVisible;
     },
+    closeMenu() {
+      this.showListVisible = false;
+    },
 
-    setActiveChat() {
-      let chats = document.querySelectorAll(".chat");
-      chats.forEach((item) => {
-        item.addEventListener("click", () => {
-          chats.forEach((e) => {
-            e.classList.remove("active");
-          });
-          item.classList.add("active");
-          let numElement = item.querySelector(".num.unread");
-          if (numElement) {
-            numElement.textContent = "";
-            numElement.classList.remove("unread");
+    setActiveChat(index) {
+      this.activeChat = index;
+      const chat = this.chats[index];
+      if (chat.unread) {
+        chat.unread = false;
+        chat.unreadCount = 0;
+      }
+    },
+    handlePinChat() {
+      this.$emit("pin-chat");
+    },
+  },
+  directives: {
+    clickOutside: {
+      beforeMount(el, binding) {
+        el.clickOutsideEvent = (event) => {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value(event);
           }
-        });
-      });
+        };
+        document.body.addEventListener("click", el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener("click", el.clickOutsideEvent);
+      },
     },
   },
 };
@@ -216,7 +263,7 @@ export default {
   position: relative;
   width: 100%;
   height: calc(87vh - 60px);
-  padding: 50px;
+  padding: 50px 50px 15px 50px;
   overflow-y: auto;
   background-color: #efddd5;
   background-image: url("../../public/img/pattern.png");

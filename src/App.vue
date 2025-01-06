@@ -4,8 +4,13 @@
       <HeaderComponent />
       <div class="app">
         <div class="row">
-          <SidebarLeft @select-chat="setSelectedChat" />
-          <SidebarRight :selectedChat="selectedChat" v-if="selectedChat" />
+          <SidebarLeft @select-chat="setSelectedChat" ref="leftSidebar" />
+          <SidebarRight
+            :selectedChat="selectedChat"
+            v-if="selectedChat"
+            @mark-as-unread="handleMarkAsUnread"
+            @pin-chat="pinActiveChatInLeftSidebar"
+          />
         </div>
       </div>
     </div>
@@ -32,6 +37,22 @@ export default {
   methods: {
     setSelectedChat(chat) {
       this.selectedChat = chat;
+    },
+    handleMarkAsUnread() {
+      const activeChat = this.$refs.leftSidebar.chats.find(
+        (chat) => chat.isActive
+      );
+      if (activeChat) {
+        this.$refs.leftSidebar.markAsUnread(activeChat);
+      }
+    },
+    pinActiveChatInLeftSidebar() {
+      const activeChat = this.$refs.leftSidebar.chats.find(
+        (chat) => chat.isActive
+      );
+      if (activeChat) {
+        this.$refs.leftSidebar.pinChat(activeChat);
+      }
     },
   },
 };
