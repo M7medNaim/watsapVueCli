@@ -1,87 +1,97 @@
 <template>
-  <div class="col-0 col-md-8 boxChat" v-if="selectedChat">
-    <div class="right-side">
-      <div class="header">
+  <div class="col-0 col-md-8 boxChat px-0" v-if="selectedChat">
+    <div class="right-side" style="background-color: #efddd5; height: 95vh">
+      <div
+        class="header position-relative bg-secondary-subtle py-1 px-2 border-1 border-end border-secondary-subtle"
+      >
         <div class="row">
-          <div class="col-6">
+          <div class="col-4">
             <div
-              class="user-details d-flex justify-content-start align-items-center"
+              class="user-details d-flex justify-content-start align-items-center gap-2 h-100"
             >
               <div class="user-imgBx">
                 <img
                   :src="selectedChat.img"
                   alt=""
-                  class="img-fluid rounded-circle"
+                  class="img-fluid rounded-circle w-100 h-100"
                 />
               </div>
               <h6 class="pt-1">{{ selectedChat.name }} <br /></h6>
             </div>
           </div>
-          <div class="col-6">
-            <div
-              class="search_list d-flex justify-content-end align-items-center gap-3 fs-5"
-            >
-              <div id="bxSearch" class="d-flex">
-                <div
-                  class="searchInput align-items-center"
-                  :class="{ 'show-search': isSearchBarVisible }"
-                >
-                  <input
-                    type="text"
-                    name="searchChat"
-                    id="searchChat"
-                    class="ms-3"
-                    v-model="searchQuery"
-                    placeholder="... Search Here"
-                  />
-                </div>
-                <button
-                  @click="toggleSearchInput()"
-                  aria-label="search in chat"
-                >
-                  <i class="fa-solid fa-magnifying-glass searchIcon"></i>
-                </button>
+          <div
+            class="col-8 search_list d-flex justify-content-end align-items-center gap-3 fs-5 h-100 pt-2"
+          >
+            <div id="bxSearch" class="d-flex">
+              <div
+                class="searchInput align-items-center"
+                :class="{ 'show-search': isSearchBarVisible }"
+              >
+                <input
+                  type="text"
+                  name="searchChat"
+                  id="searchChat"
+                  class="ms-3 border-0 rounded-1 py-1 px-2 fs-6 w-100 ms-5"
+                  v-model="searchQuery"
+                  placeholder="... Search Here"
+                />
               </div>
-              <button @click.stop="showList()" aria-label="list chat (menu)">
+              <button @click="toggleSearchInput()" aria-label="search in chat">
                 <i
-                  class="fa-solid fa-ellipsis-vertical"
-                  style="color: #5a5757"
+                  class="fa-solid fa-magnifying-glass searchIcon me-2 text-secondary"
                 ></i>
               </button>
             </div>
+            <button @click.stop="showList()" aria-label="list chat (menu)">
+              <i
+                class="fa-solid fa-ellipsis-vertical text-secondary"
+                style="color: #5a5757"
+              ></i>
+            </button>
           </div>
         </div>
       </div>
 
-      <div class="chatBx" ref="chatBox">
+      <div
+        class="chatBx position-relative w-100 overflow-auto px-5 pt-5 pb-3"
+        ref="chatBox"
+      >
         <div
           ref="menu"
           v-click-outside="closeMenu"
-          class="menu align-items-center"
+          class="menu align-items-center text-end bg-secondary-subtle rounded-2 lh-base"
           :class="{ 'show-list': showListVisible }"
         >
-          <ul>
-            <li><a href="#">Archive Chat</a></li>
+          <ul class="ps-0">
+            <li><a href="#" @click="handleArchiveChat">Archive Chat</a></li>
             <li><a href="#" @click="handlePinChat">Pin Chat</a></li>
-            <li><a href="#">Label Chat</a></li>
+            <li>
+              <a href="#" @click="handleLabelClick">Label Chat</a>
+            </li>
             <li>
               <a href="#" @click="$emit('mark-as-unread', chat)"
                 >Mark as Unread</a
               >
             </li>
-            <li><a href="#">Block, Delete Chat</a></li>
+            <li><a href="#" @click="handleDeleteChat">Delete Chat</a></li>
           </ul>
         </div>
-        <p class="date">اليوم</p>
+        <p
+          class="date fs-6 text-center bg-secondary text-white py-1 px-3 rounded-3"
+        >
+          اليوم
+        </p>
         <div
-          class="msg"
+          class="msg position-relative w-100 d-flex my-1"
           v-for="(message, index) in filteredMessages"
           :key="index"
           :class="message.type"
         >
-          <p>
+          <p class="position-relative text-start px-3 py-2 start-0 rounded-2">
             {{ message.text }} <br />
-            <span>{{ message.time }}</span>
+            <span class="d-block mt-1 opacity-50 fst-normal">{{
+              message.time
+            }}</span>
           </p>
         </div>
       </div>
@@ -95,7 +105,7 @@
 import MessageInput from "@/components/MessageInput.vue";
 
 export default {
-  emits: ["mark-as-unread", "pin-chat"],
+  emits: ["mark-as-unread", "pin-chat", "open-label", "delete-chat"],
   components: {
     MessageInput,
   },
@@ -181,6 +191,12 @@ export default {
     handlePinChat() {
       this.$emit("pin-chat");
     },
+    handleLabelClick() {
+      this.$emit("open-label");
+    },
+    handleDeleteChat() {
+      this.$emit("delete-chat");
+    },
   },
   directives: {
     clickOutside: {
@@ -201,24 +217,7 @@ export default {
 </script>
 
 <style scoped>
-.col-md-8 {
-  padding-left: 0;
-  padding-right: 0;
-}
-.right-side {
-  background-color: #efddd5;
-  height: 95vh;
-}
 .right-side .header {
-  position: relative;
-  background-color: #d3d1d1;
-  height: 8vh;
-  padding: 5px 10px;
-  border-right: 1px solid #b8b6b6;
-}
-
-.right-side .header .user-details {
-  gap: 10px;
   height: 8vh;
 }
 
@@ -227,22 +226,6 @@ export default {
   height: 45px;
 }
 
-.right-side .header .user-details .user-imgBx img {
-  width: 45px;
-  height: 45px;
-}
-.search_list {
-  height: 8vh;
-}
-.search_list #bxSearch input {
-  box-sizing: border-box;
-  border: none;
-  border-radius: 5px;
-  outline: none;
-  padding: 5px 10px;
-  font-size: 14px;
-  width: 350px;
-}
 .searchInput {
   opacity: 0;
   visibility: hidden;
@@ -254,18 +237,12 @@ export default {
 }
 .search_list #bxSearch .searchIcon {
   cursor: pointer;
-  color: #5a5757;
 }
 
 /* chat box */
 
 .right-side .chatBx {
-  position: relative;
-  width: 100%;
   height: calc(87vh - 60px);
-  padding: 50px 50px 15px 50px;
-  overflow-y: auto;
-  background-color: #efddd5;
   background-image: url("../../public/img/pattern.png");
   background-size: contain;
   background-position: center;
@@ -276,10 +253,6 @@ export default {
   top: 12.5%;
   left: 1%;
   z-index: 999;
-  background-color: #eee;
-  border-radius: 10px;
-  text-align: end;
-  line-height: 30px;
   opacity: 0;
   visibility: hidden;
   transition: all 0.5s;
@@ -290,9 +263,6 @@ export default {
   visibility: visible;
 }
 
-.right-side .chatBx .menu ul {
-  padding-left: 0;
-}
 .right-side .chatBx .menu ul li {
   padding: 10px 10px 10px 20px;
   transition: all 0.2s;
@@ -306,38 +276,16 @@ export default {
 }
 
 .right-side .chatBx p.date {
-  font-size: 18px;
   position: sticky;
   top: -10%;
   right: 50%;
-  text-align: center;
   z-index: 999;
-  background-color: #787676;
   width: fit-content;
-  color: #fff;
-  padding: 3px 12px;
-  border-radius: 10px;
-  -webkit-border-radius: 10px;
-  -moz-border-radius: 10px;
-  -ms-border-radius: 10px;
-  -o-border-radius: 10px;
-}
-
-.right-side .chatBx .msg {
-  position: relative;
-  display: flex;
-  width: 100%;
-  margin: 5px 0;
 }
 
 .right-side .chatBx .msg p {
-  position: relative;
-  right: 0;
-  text-align: right;
   max-width: 65%;
-  padding: 12px;
   background: #dcf8c6;
-  border-radius: 10px;
   font-size: 0.8rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
@@ -354,13 +302,6 @@ export default {
   border-left: 10px solid transparent;
   border-bottom: 10px solid transparent;
   border-right: 10px solid #dcf8c6;
-}
-
-.right-side .chatBx .msg p span {
-  display: block;
-  margin-top: 5px;
-  font-size: 0.85rem;
-  opacity: 0.5;
 }
 
 .right-side .chatBx .msg-me {

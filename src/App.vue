@@ -9,7 +9,10 @@
             :selectedChat="selectedChat"
             v-if="selectedChat"
             @mark-as-unread="handleMarkAsUnread"
-            @pin-chat="pinActiveChatInLeftSidebar"
+            @pin-chat="pinActiveChat"
+            :chats="chats"
+            @open-label="handleOpenLabel"
+            @delete-chat="handleDeleteChat"
           />
         </div>
       </div>
@@ -46,13 +49,20 @@ export default {
         this.$refs.leftSidebar.markAsUnread(activeChat);
       }
     },
-    pinActiveChatInLeftSidebar() {
+    pinActiveChat() {
       const activeChat = this.$refs.leftSidebar.chats.find(
         (chat) => chat.isActive
       );
       if (activeChat) {
         this.$refs.leftSidebar.pinChat(activeChat);
       }
+    },
+    handleOpenLabel() {
+      this.$refs.leftSidebar.openLabelModal();
+    },
+    handleDeleteChat() {
+      this.$refs.leftSidebar.deleteChat();
+      this.selectedChat = null;
     },
   },
 };
@@ -73,7 +83,9 @@ export default {
 ul {
   list-style: none;
 }
-
+input {
+  outline: none;
+}
 body {
   height: 100vh;
   background-image: url("../public/img/pattern.png");

@@ -1,44 +1,88 @@
 <template>
-  <div class="col-12 col-md-4 chatResponsive">
-    <div class="left-side">
-      <div class="inputSearch w-100 mb-2 mt-4 text-center">
+  <div class="col-12 col-md-4 chatResponsive px-0">
+    <div class="left-side pt-2 bg-secondary-subtle">
+      <div class="inputSearch w-100 mb-2 mt-4 text-center position-relative">
         <input
           type="text"
           placeholder="... Search Chat"
           v-model="searchQuery"
+          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary"
         />
-        <i class="fa-solid fa-magnifying-glass searchIcon"></i>
+        <i
+          class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary"
+        ></i>
       </div>
-      <div class="chat-list">
+      <div class="chat-list position-relative overflow-auto h-100">
         <div
-          class="chat d-flex justify-content-end align-items-center"
+          class="chat d-flex justify-content-end align-items-center position-relative w-100 px-3 pt-2 pb-3 border-1 border-bottom border-secondary-subtle"
           v-for="(chat, index) in filteredChats"
           :key="index"
           @click="openChat(chat, index)"
           :class="{ active: chat.isActive }"
         >
-          <div class="imgBx">
-            <img :src="chat.img" alt="" class="rounded-circle" />
+          <div class="imgBx position-relative overflow-hidden h-25 me-2">
+            <img :src="chat.img" alt="" class="rounded-circle w-100 h-100" />
           </div>
-          <div class="details">
-            <div class="head pe-2">
-              <h4 class="name">{{ chat.name }}</h4>
-              <span class="time">{{ chat.time }}</span>
+          <div class="details position-relative w-100">
+            <div class="head pe-2 d-flex justify-content-between">
+              <h4 class="name fs-6 fw-medium text-black pt-2">
+                {{ chat.name }}
+              </h4>
+              <span class="time text-secondary fst-normal">{{
+                chat.time
+              }}</span>
             </div>
-            <div class="msgs d-flex justify-content-between align-items-center">
+            <div
+              class="msgs d-flex justify-content-between align-items-center text-secondary"
+            >
               <p class="msg pe-2">{{ chat.message }}</p>
-              <b
-                class="num"
-                :class="{ unread: chat.unread }"
-                v-if="chat.unread"
+              <div class="d-flex align-items-center gap-3">
+                <b
+                  class="num"
+                  :class="{ unread: chat.unread }"
+                  v-if="chat.unread"
+                >
+                  {{ chat.unreadCount }}
+                </b>
+                <i
+                  v-if="chat.pinned"
+                  class="fa-solid fa-thumbtack pin-icon"
+                  title="Pinned Chat"
+                ></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div ref="labelModal" class="modal fade" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="row pt-2">
+              <div class="col-6">
+                <h5 class="modal-title text-end">Label Chat</h5>
+              </div>
+              <div class="col-6 text-start">
+                <button
+                  type="button"
+                  class="btn-close"
+                  @click="hideBootstrapModal"
+                ></button>
+              </div>
+            </div>
+            <div class="modal-body">
+              <input v-model="newLabel" type="text" class="form-control" />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-secondary"
+                @click="hideBootstrapModal"
               >
-                {{ chat.unreadCount }}
-              </b>
-              <i
-                v-if="chat.pinned"
-                class="fa-solid fa-thumbtack pin-icon"
-                title="Pinned Chat"
-              ></i>
+                Close
+              </button>
+              <button type="button" class="btn btn-primary" @click="setLabel">
+                Save
+              </button>
             </div>
           </div>
         </div>
@@ -48,6 +92,7 @@
 </template>
 
 <script>
+import { Modal } from "bootstrap";
 export default {
   name: "SidebarLeft",
   data() {
@@ -63,6 +108,7 @@ export default {
           unreadCount: 3,
           isActive: false,
           pinned: false,
+          label: "",
           messages: [
             { type: "msg-me", text: "مرحباً!", time: "12:15" },
             { type: "msg-frnd", text: "أهلاً بك", time: "12:16" },
@@ -79,6 +125,9 @@ export default {
             { type: "msg-me", text: "مرحباً!", time: "12:15" },
             { type: "msg-frnd", text: "أهلاً بك", time: "12:16" },
           ],
+          selectedChat: null,
+          newLabel: "",
+          modalInstance: null,
         },
         {
           img: require("@/assets/img/img1.jpg"),
@@ -89,6 +138,7 @@ export default {
           unreadCount: 0,
           isActive: false,
           pinned: false,
+          label: "",
           messages: [
             { type: "msg-me", text: "كيف حالك؟", time: "10:30" },
             { type: "msg-frnd", text: "أنا بخير", time: "10:31" },
@@ -101,6 +151,9 @@ export default {
             { type: "msg-me", text: "كيف حالك؟", time: "10:30" },
             { type: "msg-frnd", text: "أنا بخير", time: "10:31" },
           ],
+          selectedChat: null,
+          newLabel: "",
+          modalInstance: null,
         },
       ],
     };
@@ -130,14 +183,23 @@ export default {
   },
   methods: {
     openChat(chat, index) {
-      this.chats.forEach((item) => {
-        item.isActive = false;
-      });
-      this.chats[index].isActive = true;
+      if (index >= 0 && index < this.chats.length) {
+        this.chats.forEach((item) => {
+          item.isActive = false;
+        });
 
-      this.chats[index].unread = false;
-      this.chats[index].unreadCount = 0;
-      this.$emit("select-chat", chat);
+        this.chats[index].isActive = true;
+
+        this.selectedChat = this.chats[index];
+        this.newLabel = this.selectedChat.name;
+
+        this.chats[index].unread = false;
+        this.chats[index].unreadCount = 0;
+
+        this.$emit("select-chat", chat);
+      } else {
+        console.error("The chat does not exist");
+      }
     },
     markAsUnread(chat) {
       chat.unread = true;
@@ -174,43 +236,69 @@ export default {
         chat.isActive = true;
       }
     },
+    openLabelModal() {
+      if (this.selectedChat) {
+        this.newLabel = this.selectedChat.name;
+        this.showBootstrapModal();
+      }
+    },
+    setLabel() {
+      if (this.selectedChat) {
+        this.selectedChat.name = this.newLabel;
+        this.hideBootstrapModal();
+      }
+    },
+    showBootstrapModal() {
+      const modalElement = this.$refs.labelModal;
+      if (modalElement) {
+        const modal = new Modal(modalElement);
+        modal.show();
+      }
+    },
+    hideBootstrapModal() {
+      const modalElement = this.$refs.labelModal;
+      if (modalElement) {
+        const modal = Modal.getInstance(modalElement);
+        modal.hide();
+      }
+    },
+    deleteChat() {
+      const activeChat = this.chats.find((chat) => chat.isActive);
+      if (activeChat) {
+        const index = this.chats.indexOf(activeChat);
+        if (index !== -1) {
+          this.chats.forEach((chat, idx) => {
+            this.chats[idx].isActive = false;
+          });
+          this.chats.splice(index, 1);
+        }
+      }
+    },
+  },
+  mounted() {
+    if (this.$refs.labelModal) {
+      this.modalInstance = new Modal(this.$refs.labelModal);
+    }
   },
 };
 </script>
 
 <style scoped>
-.col-md-4 {
-  padding-left: 0;
-  padding-right: 0;
-}
 .left-side {
-  background-color: #d3d1d1;
   height: 95vh;
-  padding-top: 10px;
-}
-.left-side .inputSearch {
-  position: relative;
 }
 .left-side .inputSearch .searchIcon {
   position: absolute;
-  right: 7%;
+  right: 8%;
   top: 30%;
-  font-size: 18px;
-  color: #737070;
 }
 .left-side .inputSearch input {
   outline: none;
-  border: 1px solid #ffffff;
-  padding: 10px 35px 10px 10px;
-  background-color: #f4f3f3;
   width: 90%;
   height: 40px;
-  border-radius: 10px;
-  color: #737070;
   transition: all 0.3s;
 }
 .left-side .inputSearch input::placeholder {
-  color: #585656ab;
   font-size: 14px;
 }
 .left-side .inputSearch input:focus {
@@ -218,11 +306,6 @@ export default {
 }
 
 /* left sidebar  */
-.left-side .chat-list {
-  position: relative;
-  overflow-y: auto;
-  height: 100%;
-}
 /* scroll style */
 .left-side .chat-list::-webkit-scrollbar {
   width: 10px;
@@ -240,12 +323,9 @@ export default {
   -ms-border-radius: 8px;
   -o-border-radius: 8px;
 }
+/* end scroll style */
 
 .left-side .chat-list .chat {
-  position: relative;
-  width: 100%;
-  padding: 15px 15px 10px 15px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
 
@@ -258,51 +338,10 @@ export default {
 }
 
 .left-side .chat-list .chat .imgBx {
-  position: relative;
-  width: 58px;
-  height: 50px;
-  overflow: hidden;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
-.left-side .chat-list .chat .imgBx img {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  object-fit: cover;
-}
-
-.left-side .chat-list .chat .details {
-  position: relative;
-  width: 100%;
-}
-
-.left-side .chat-list .chat .details .head {
-  display: flex;
-  justify-content: space-between;
-}
-
-.left-side .chat-list .chat .details .head .name {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #111;
-  padding-top: 5px;
-}
-
-.left-side .chat-list .chat .details .head .time {
-  font-size: 0.75rem;
-  color: #aaa;
-}
-
-.left-side .chat-list .chat.active .details .head .time {
-  color: #111;
+  width: 70px;
 }
 
 .left-side .chat-list .chat .details .msg {
-  color: #aaa;
   display: -webkit-box;
   -webkit-line-clamp: 1;
   font-size: 0.9rem;

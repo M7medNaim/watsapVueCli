@@ -1,11 +1,14 @@
 <template>
   <div
-    class="chat-input pb-4 d-flex justify-content-between align-items-center w-100"
+    class="chat-input pb-4 d-flex justify-content-between align-items-center w-100 position-relative"
   >
     <button type="submit" @click="toggleEmoji" class="pt-2" aria-label="Emojis">
       <i class="fa-regular fa-face-smile"></i>
     </button>
-    <div v-if="isEmojiVisible" class="emoji-picker">
+    <div
+      v-if="isEmojiVisible"
+      class="emoji-picker bg-white rounded-1 border border-1 border-dark-subtle py-2 px-2 d-flex flex-wrap gap-3 w-25"
+    >
       <span @click="addEmoji('😀')">😀</span>
       <span @click="addEmoji('😂')">😂</span>
       <span @click="addEmoji('😍')">😍</span>
@@ -30,9 +33,6 @@
       <span @click="addEmoji('😍')">😍</span>
       <span @click="addEmoji('😎')">😎</span>
       <span @click="addEmoji('😢')">😢</span>
-      <span @click="addEmoji('😡')">😡</span>
-      <span @click="addEmoji('😀')">😀</span>
-      <span @click="addEmoji('😀')">😀</span>
     </div>
     <div class="upload_file pt-2">
       <label for="file" class="upload-label">
@@ -42,7 +42,7 @@
         <input
           type="file"
           id="file"
-          class="file-upload"
+          class="file-upload position-relative d-none"
           autocomplete="off"
           aria-label="uploadFile"
         />
@@ -57,7 +57,7 @@
     />
     <button
       type="submit"
-      class="submitMsg pt-2"
+      class="submitMsg pt-2 position-relative"
       @click="sendMessage"
       aria-label="sendMessage && voiceMessage"
     >
@@ -109,15 +109,7 @@ export default {
   position: absolute;
   bottom: 60px;
   right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px 10px 10px 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3px;
   font-size: 20px;
-  width: fit-content;
   text-align: center;
 }
 
@@ -133,7 +125,6 @@ export default {
 
 /* chat input */
 .right-side .chat-input {
-  position: relative;
   height: 60px;
   background: #f0f0f0;
   padding: 15px;
@@ -150,7 +141,6 @@ export default {
 }
 
 .right-side .chat-input input {
-  position: relative;
   width: 90%;
   margin: 8px 20px 0px 15px;
   padding: 10px 20px;
@@ -159,10 +149,6 @@ export default {
   border-radius: 10px;
   font-size: 1rem;
   box-shadow: 2px 2px 5px rgba(14, 14, 14, 0.1);
-}
-
-.right-side .chat-input .file-upload {
-  display: none;
 }
 
 .right-side .chat-input .upload-label {
@@ -174,13 +160,8 @@ export default {
   height: 40px;
 }
 
-.right-side .chat-input .submitMsg {
-  position: relative;
-}
-
 .right-side .chat-input .submitMsg i.fa-paper-plane {
   position: absolute;
   top: 0;
-  display: none;
 }
 </style>

@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-6 close">
         <button aria-label="close button">
-          <i class="fa-solid fa-x pe-4 pt-2"></i>
+          <i class="fa-solid fa-x pe-4 pt-2 text-secondary fs-6"></i>
         </button>
       </div>
     </div>
@@ -19,10 +19,5 @@ export default {
 <style scoped>
 header {
   height: 5vh;
-}
-
-header .row .close i {
-  font-size: 15px;
-  color: #aca8a8;
 }
 </style>
