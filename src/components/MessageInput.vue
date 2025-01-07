@@ -1,13 +1,13 @@
 <template>
   <div
-    class="chat-input pb-4 d-flex justify-content-between align-items-center w-100 position-relative"
+    class="chat-input pb-4 d-flex justify-content-between align-items-center w-100 position-relative bg-body-secondary p-3"
   >
     <button type="submit" @click="toggleEmoji" class="pt-2" aria-label="Emojis">
-      <i class="fa-regular fa-face-smile"></i>
+      <i class="fa-regular fa-face-smile fs-4 text-body-secondary ms-3"></i>
     </button>
     <div
       v-if="isEmojiVisible"
-      class="emoji-picker bg-white rounded-1 border border-1 border-dark-subtle py-2 px-2 d-flex flex-wrap gap-3 w-25"
+      class="emoji-picker bg-white rounded-1 border border-1 border-dark-subtle py-2 px-2 d-flex flex-wrap gap-3 w-25 position-absolute fs-6 text-center end-0 bottom-100"
     >
       <span @click="addEmoji('😀')">😀</span>
       <span @click="addEmoji('😂')">😂</span>
@@ -36,7 +36,9 @@
     </div>
     <div class="upload_file pt-2">
       <label for="file" class="upload-label">
-        <i class="fa-solid fa-paperclip upload-icon pt-2"></i>
+        <i
+          class="fa-solid fa-paperclip upload-icon pt-2 fs-4 text-body-secondary"
+        ></i>
       </label>
       <form action="" autocomplete="off">
         <input
@@ -53,6 +55,7 @@
       ref="messageInput"
       placeholder="Type a message"
       id="inputMassege"
+      class="rounded-2 fs-6 border-0 py-2 px-4 shadow-lg mt-2 ms-2"
       v-model="newMessage"
     />
     <button
@@ -63,13 +66,13 @@
     >
       <i
         ref="voiceIcon"
-        class="fa-solid fa-microphone d-block"
+        class="fa-solid fa-microphone d-block fs-4 text-body-secondary"
         id="voiceIcon"
         v-if="newMessage.trim() === ''"
       ></i>
       <i
         ref="sendIcon"
-        class="fa-solid fa-paper-plane d-block position-relative"
+        class="fa-solid fa-paper-plane d-block position-relative fs-4 text-body-secondary"
         id="sendIcon"
         v-if="newMessage.trim() !== ''"
       ></i>
@@ -105,13 +108,6 @@ export default {
 </script>
 <style scoped>
 /* list emoji style */
-.emoji-picker {
-  position: absolute;
-  bottom: 60px;
-  right: 0;
-  font-size: 20px;
-  text-align: center;
-}
 
 .emoji-picker span {
   cursor: pointer;
@@ -126,29 +122,10 @@ export default {
 /* chat input */
 .right-side .chat-input {
   height: 60px;
-  background: #f0f0f0;
-  padding: 15px;
-}
-
-.right-side .chat-input i {
-  cursor: pointer;
-  font-size: 1.5rem;
-  color: #51585c;
-}
-
-.right-side .chat-input i:nth-child(1) {
-  margin-right: 15px;
 }
 
 .right-side .chat-input input {
   width: 90%;
-  margin: 8px 20px 0px 15px;
-  padding: 10px 20px;
-  border: none;
-  outline: none;
-  border-radius: 10px;
-  font-size: 1rem;
-  box-shadow: 2px 2px 5px rgba(14, 14, 14, 0.1);
 }
 
 .right-side .chat-input .upload-label {

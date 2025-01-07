@@ -293,7 +293,6 @@ export default {
   top: 30%;
 }
 .left-side .inputSearch input {
-  outline: none;
   width: 90%;
   height: 40px;
   transition: all 0.3s;
