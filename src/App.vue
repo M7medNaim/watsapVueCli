@@ -1,9 +1,9 @@
 <template>
-  <main>
+  <main class="overflow-hidden h-100 w-100">
     <div id="app">
       <HeaderComponent />
       <div class="app">
-        <div class="row">
+        <div class="row mx-0">
           <SidebarLeft @select-chat="setSelectedChat" ref="leftSidebar" />
           <SidebarRight
             :selectedChat="selectedChat"
@@ -73,46 +73,11 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
 /* global style  */
-* {
-  font-family: "Open Sans", sans-serif;
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-ul {
-  list-style: none;
-}
-input {
-  outline: none;
-}
-body {
-  height: 100vh;
-  background-image: url("../public/img/pattern.png");
-  background-size: contain;
-  background-position: center;
-  background-color: #efddd5 !important;
-}
-
-button {
-  background-color: transparent;
-  border: none;
-}
-main {
-  overflow: hidden;
-}
 main .app {
   height: 95vh;
 }
-
-main .app .row {
-  margin-left: 0;
-  margin-right: 0;
-}
-
-.col-md-8,
-.col-md-4 {
-  padding-left: 0;
-  padding-right: 0;
+a {
+  text-decoration: none !important;
+  color: #000 !important;
 }
 </style>

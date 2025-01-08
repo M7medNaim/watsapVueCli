@@ -2,7 +2,7 @@
   <header class="w-100 bg-white">
     <div class="row">
       <div class="col-6 close">
-        <button aria-label="close button">
+        <button aria-label="close button" class="border-0 bg-transparent">
           <i class="fa-solid fa-x pe-4 pt-2 text-secondary fs-6"></i>
         </button>
       </div>

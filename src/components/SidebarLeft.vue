@@ -6,10 +6,11 @@
           type="text"
           placeholder="... Search Chat"
           v-model="searchQuery"
-          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary"
+          style="outline: none"
+          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary h-25"
         />
         <i
-          class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary"
+          class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary position-absolute"
         ></i>
       </div>
       <div class="chat-list position-relative overflow-auto h-100">
@@ -35,7 +36,9 @@
             <div
               class="msgs d-flex justify-content-between align-items-center text-secondary"
             >
-              <p class="msg pe-2">{{ chat.message }}</p>
+              <p class="msg pe-2 overflow-hidden fst-normal text-truncate">
+                {{ chat.message }}
+              </p>
               <div class="d-flex align-items-center gap-3">
                 <b
                   class="num"
@@ -64,23 +67,32 @@
               <div class="col-6 text-start">
                 <button
                   type="button"
-                  class="btn-close"
+                  class="btn-close border-0 bg-transparent"
                   @click="hideBootstrapModal"
                 ></button>
               </div>
             </div>
             <div class="modal-body">
-              <input v-model="newLabel" type="text" class="form-control" />
+              <input
+                v-model="newLabel"
+                type="text"
+                class="form-control"
+                style="outline: none"
+              />
             </div>
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary"
+                class="btn btn-secondary border-0 bg-transparent"
                 @click="hideBootstrapModal"
               >
                 Close
               </button>
-              <button type="button" class="btn btn-primary" @click="setLabel">
+              <button
+                type="button"
+                class="btn btn-primary border-0 bg-transparent"
+                @click="setLabel"
+              >
                 Save
               </button>
             </div>
@@ -288,13 +300,11 @@ export default {
   height: 95vh;
 }
 .left-side .inputSearch .searchIcon {
-  position: absolute;
   right: 8%;
-  top: 30%;
+  top: 27%;
 }
 .left-side .inputSearch input {
   width: 90%;
-  height: 40px;
   transition: all 0.3s;
 }
 .left-side .inputSearch input::placeholder {
@@ -324,10 +334,6 @@ export default {
 }
 /* end scroll style */
 
-.left-side .chat-list .chat {
-  cursor: pointer;
-}
-
 .left-side .chat-list .chat.active {
   background: #ebebeb;
 }
@@ -343,10 +349,7 @@ export default {
 .left-side .chat-list .chat .details .msg {
   display: -webkit-box;
   -webkit-line-clamp: 1;
-  font-size: 0.9rem;
   -webkit-box-orient: vertical;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .left-side .chat-list .chat .details .num.unread {

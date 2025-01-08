@@ -16,7 +16,7 @@
                   class="img-fluid rounded-circle w-100 h-100"
                 />
               </div>
-              <h6 class="pt-1">{{ selectedChat.name }} <br /></h6>
+              <h6 class="pt-2">{{ selectedChat.name }} <br /></h6>
             </div>
           </div>
           <div
@@ -34,15 +34,24 @@
                   class="ms-3 border-0 rounded-1 py-1 px-2 fs-6 w-100 ms-5"
                   v-model="searchQuery"
                   placeholder="... Search Here"
+                  style="outline: none"
                 />
               </div>
-              <button @click="toggleSearchInput()" aria-label="search in chat">
+              <button
+                @click="toggleSearchInput()"
+                aria-label="search in chat"
+                class="border-0 bg-transparent"
+              >
                 <i
-                  class="fa-solid fa-magnifying-glass searchIcon me-2 text-secondary"
+                  class="fa-solid fa-magnifying-glass searchIcon me-2 text-secondary cursor-pointer"
                 ></i>
               </button>
             </div>
-            <button @click.stop="showList()" aria-label="list chat (menu)">
+            <button
+              @click.stop="showList()"
+              aria-label="list chat (menu)"
+              class="border-0 bg-transparent"
+            >
               <i
                 class="fa-solid fa-ellipsis-vertical text-secondary"
                 style="color: #5a5757"
@@ -59,10 +68,10 @@
         <div
           ref="menu"
           v-click-outside="closeMenu"
-          class="menu align-items-center text-end bg-secondary-subtle rounded-2 lh-base"
+          class="menu align-items-center text-end bg-secondary-subtle rounded-2 lh-base position-fixed z-3"
           :class="{ 'show-list': showListVisible }"
         >
-          <ul class="ps-0">
+          <ul class="list-unstyled p-0">
             <li><a href="#" @click="handleArchiveChat">Archive Chat</a></li>
             <li><a href="#" @click="handlePinChat">Pin Chat</a></li>
             <li>
@@ -77,7 +86,7 @@
           </ul>
         </div>
         <p
-          class="date fs-6 text-center bg-secondary text-white py-1 px-3 rounded-3"
+          class="date fs-6 text-center bg-secondary text-white py-1 px-3 rounded-3 position-sticky end-50 z-3"
         >
           اليوم
         </p>
@@ -87,7 +96,9 @@
           :key="index"
           :class="message.type"
         >
-          <p class="position-relative text-start px-3 py-2 start-0 rounded-2">
+          <p
+            class="position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
+          >
             {{ message.text }} <br />
             <span class="d-block mt-1 opacity-50 fst-normal">{{
               message.time
@@ -235,9 +246,6 @@ export default {
   opacity: 1;
   visibility: visible;
 }
-.search_list #bxSearch .searchIcon {
-  cursor: pointer;
-}
 
 /* chat box */
 
@@ -249,10 +257,8 @@ export default {
 }
 
 .right-side .chatBx .menu {
-  position: fixed;
   top: 12.5%;
   left: 1%;
-  z-index: 999;
   opacity: 0;
   visibility: hidden;
   transition: all 0.5s;
@@ -262,7 +268,6 @@ export default {
   opacity: 1;
   visibility: visible;
 }
-
 .right-side .chatBx .menu ul li {
   padding: 10px 10px 10px 20px;
   transition: all 0.2s;
@@ -270,27 +275,15 @@ export default {
 .right-side .chatBx .menu ul li:hover {
   background-color: #fff;
 }
-.right-side .chatBx .menu ul li a {
-  text-decoration: none;
-  color: #000;
-}
 
 .right-side .chatBx p.date {
-  position: sticky;
   top: -10%;
-  right: 50%;
-  z-index: 999;
   width: fit-content;
 }
 
 .right-side .chatBx .msg p {
   max-width: 65%;
   background: #dcf8c6;
-  font-size: 0.8rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
-  line-height: 1.5;
 }
 
 .right-side .chatBx .msg-me p::before {
