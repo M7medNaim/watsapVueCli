@@ -15,7 +15,7 @@
       </div>
       <div class="chat-list position-relative overflow-auto h-100">
         <div
-          class="chat d-flex justify-content-end align-items-center position-relative w-100 px-3 pt-2 pb-3 border-1 border-bottom border-secondary-subtle"
+          class="chat d-flex justify-content-end align-items-center position-relative w-100 px-3 pt-2 pb-3 border-1 border-bottom border-secondary-subtle cursor-pointer"
           v-for="(chat, index) in filteredChats"
           :key="index"
           @click="openChat(chat, index)"
@@ -83,14 +83,14 @@
             <div class="modal-footer">
               <button
                 type="button"
-                class="btn btn-secondary border-0 bg-transparent"
+                class="btn btn-secondary border-0"
                 @click="hideBootstrapModal"
               >
                 Close
               </button>
               <button
                 type="button"
-                class="btn btn-primary border-0 bg-transparent"
+                class="btn btn-success border-0"
                 @click="setLabel"
               >
                 Save
@@ -301,7 +301,7 @@ export default {
 }
 .left-side .inputSearch .searchIcon {
   right: 8%;
-  top: 27%;
+  top: 28%;
 }
 .left-side .inputSearch input {
   width: 90%;

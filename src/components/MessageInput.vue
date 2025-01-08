@@ -18,32 +18,52 @@
           <!-- all Emojis -->
           <div
             v-if="isEmojiVisible"
-            class="emoji-picker bg-white rounded-1 border border-1 border-dark-subtle py-2 px-2 d-flex flex-wrap gap-3 w-25 position-absolute fs-6 text-center end-0 bottom-100"
+            class="emoji-picker bg-white rounded-2 border border-1 border-dark-subtle py-1 ps-3 pe-1 d-flex flex-wrap gap-3 w-25 position-absolute fs-5 text-center end-0 bottom-100"
           >
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😂')">😂</span>
-            <span @click="addEmoji('😍')">😍</span>
-            <span @click="addEmoji('😎')">😎</span>
-            <span @click="addEmoji('😢')">😢</span>
-            <span @click="addEmoji('😡')">😡</span>
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😂')">😂</span>
-            <span @click="addEmoji('😍')">😍</span>
-            <span @click="addEmoji('😎')">😎</span>
-            <span @click="addEmoji('😢')">😢</span>
-            <span @click="addEmoji('😡')">😡</span>
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😂')">😂</span>
-            <span @click="addEmoji('😍')">😍</span>
-            <span @click="addEmoji('😎')">😎</span>
-            <span @click="addEmoji('😢')">😢</span>
-            <span @click="addEmoji('😡')">😡</span>
-            <span @click="addEmoji('😀')">😀</span>
-            <span @click="addEmoji('😍')">😍</span>
-            <span @click="addEmoji('😎')">😎</span>
-            <span @click="addEmoji('😢')">😢</span>
+            <div class="row">
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😀')">😀</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😍')">😍</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😍')">😍</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😍')">😍</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😂')">😂</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😂')">😂</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😂')">😂</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😎')">😎</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😢')">😢</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😢')">😢</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😢')">😢</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😡')">😡</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😡')">😡</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😡')">😡</span>
+              </div>
+            </div>
           </div>
         </div>
         <!-- upload_file Icon -->
@@ -133,12 +153,11 @@ export default {
 
 .emoji-picker span {
   cursor: pointer;
-  width: 10%;
   transition: transform 0.2s;
 }
-
-.emoji-picker span:hover {
-  transform: scale(1.2);
+.emoji-picker .col-1:hover {
+  transform: scale(1.2) !important;
+  transition: transform 0.2s;
 }
 
 /* chat input */

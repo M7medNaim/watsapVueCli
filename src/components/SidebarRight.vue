@@ -2,10 +2,10 @@
   <div class="col-0 col-md-8 boxChat px-0" v-if="selectedChat">
     <div class="right-side" style="background-color: #efddd5; height: 95vh">
       <div
-        class="header position-relative bg-secondary-subtle py-1 px-2 border-1 border-end border-secondary-subtle"
+        class="header position-relative bg-secondary-subtle px-2 border-1 border-end border-secondary-subtle"
       >
-        <div class="row">
-          <div class="col-4">
+        <div class="row h-100">
+          <div class="col-4 h-100">
             <div
               class="user-details d-flex justify-content-start align-items-center gap-2 h-100"
             >
@@ -16,11 +16,11 @@
                   class="img-fluid rounded-circle w-100 h-100"
                 />
               </div>
-              <h6 class="pt-2">{{ selectedChat.name }} <br /></h6>
+              <h6 class="my-auto">{{ selectedChat.name }} <br /></h6>
             </div>
           </div>
           <div
-            class="col-8 search_list d-flex justify-content-end align-items-center gap-3 fs-5 h-100 pt-2"
+            class="col-8 search_list d-flex justify-content-end align-items-center gap-3 fs-5 h-100"
           >
             <div id="bxSearch" class="d-flex">
               <div
