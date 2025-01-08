@@ -65,6 +65,11 @@
         class="chatBx position-relative w-100 overflow-auto px-5 pt-5 pb-3"
         ref="chatBox"
       >
+        <ChatBubbles
+          :messages="filteredMessages"
+          :searchQuery="searchQuery"
+          @delete-message="handleDeleteMessage"
+        />
         <div
           ref="menu"
           v-click-outside="closeMenu"
@@ -85,26 +90,6 @@
             <li><a href="#" @click="handleDeleteChat">Delete Chat</a></li>
           </ul>
         </div>
-        <p
-          class="date fs-6 text-center bg-secondary text-white py-1 px-3 rounded-3 position-sticky end-50 z-3"
-        >
-          اليوم
-        </p>
-        <div
-          class="msg position-relative w-100 d-flex my-1"
-          v-for="(message, index) in filteredMessages"
-          :key="index"
-          :class="message.type"
-        >
-          <p
-            class="position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
-          >
-            {{ message.text }} <br />
-            <span class="d-block mt-1 opacity-50 fst-normal">{{
-              message.time
-            }}</span>
-          </p>
-        </div>
       </div>
 
       <MessageInput @send-message="receiveMessage" />
@@ -114,11 +99,12 @@
 
 <script>
 import MessageInput from "@/components/MessageInput.vue";
-
+import ChatBubbles from "@/components/ChatBubbles.vue";
 export default {
   emits: ["mark-as-unread", "pin-chat", "open-label", "delete-chat"],
   components: {
     MessageInput,
+    ChatBubbles,
   },
   name: "SidebarRight",
   props: {
@@ -208,6 +194,9 @@ export default {
     handleDeleteChat() {
       this.$emit("delete-chat");
     },
+    handleDeleteMessage(index) {
+      this.localSelectedChat.messages.splice(index, 1);
+    },
   },
   directives: {
     clickOutside: {
@@ -276,51 +265,6 @@ export default {
   background-color: #fff;
 }
 
-.right-side .chatBx p.date {
-  top: -10%;
-  width: fit-content;
-}
-
-.right-side .chatBx .msg p {
-  max-width: 65%;
-  background: #dcf8c6;
-}
-
-.right-side .chatBx .msg-me p::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -10px;
-  border-top: 10px solid #dcf8c6;
-  border-left: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid #dcf8c6;
-}
-
-.right-side .chatBx .msg-me {
-  justify-content: flex-end;
-}
-
-.right-side .chatBx .msg-frnd {
-  justify-content: flex-start;
-}
-
-.right-side .chatBx .msg-frnd p {
-  background: #fff;
-  text-align: left;
-}
-
-.right-side .chatBx .msg-frnd p::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: unset;
-  right: -10px;
-  border-top: 10px solid #fff;
-  border-left: 10px solid #fff;
-  border-bottom: 10px solid transparent;
-  border-right: 10px solid transparent;
-}
 /* scroll style */
 .right-side .chatBx::-webkit-scrollbar {
   width: 10px;

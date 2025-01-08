@@ -1,0 +1,161 @@
+<template>
+  <p
+    class="date fs-6 text-center bg-secondary text-white py-1 px-3 rounded-3 position-sticky end-50 z-3"
+  >
+    اليوم
+  </p>
+  <div
+    class="msg position-relative w-100 d-flex my-1"
+    v-for="(message, index) in filteredMessages"
+    :key="index"
+    :class="message.type"
+  >
+    <div
+      v-if="message.isCopied"
+      class="copy-message position-absolute bg-secondary-subtle py-1 px-2 rounded-1"
+      style="top: -35%; font-size: 14px"
+    >
+      Message copied!
+    </div>
+    <p
+      class="position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
+    >
+      {{ message.text }} <br />
+      <button
+        class="border-0 bg-transparent position-absolute top-0 fs-6"
+        @click.stop="toggleMenu(index)"
+        v-click-outside="closeMenu"
+      >
+        <i class="fa-solid fa-ellipsis-vertical text-secondary"></i>
+      </button>
+      <span class="d-block mt-1 opacity-50 fst-normal">{{ message.time }}</span>
+    </p>
+    <!--  -->
+    <div
+      v-if="activeMenu === index"
+      class="menu-list position-absolute bg-light border p-2 rounded shadow-sm z-3 bottom-100"
+    >
+      <ul class="list-unstyled mb-0 m-auto px-2 lh-lg">
+        <li><a href="#" @click.prevent="copyMessage(message)">copy</a></li>
+        <li><a href="#" @click.prevent="replyToMessage(message)">reply</a></li>
+        <li><a href="#" @click.prevent="deleteMessage(index)">delete</a></li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+export default {
+  name: "ChatBubbles",
+  props: {
+    messages: {
+      type: Array,
+      required: true,
+    },
+    searchQuery: {
+      type: String,
+      default: "",
+    },
+  },
+  data() {
+    return {
+      activeMenu: null,
+    };
+  },
+  computed: {
+    filteredMessages() {
+      if (!this.searchQuery) {
+        return this.messages;
+      }
+
+      return this.messages.filter((message) => {
+        return message.text
+          .toLowerCase()
+          .includes(this.searchQuery.toLowerCase());
+      });
+    },
+  },
+  methods: {
+    toggleMenu(index) {
+      this.activeMenu = this.activeMenu === index ? null : index;
+    },
+    copyMessage(message) {
+      navigator.clipboard.writeText(message.text).then(() => {
+        message.isCopied = true;
+        setTimeout(() => {
+          message.isCopied = false;
+        }, 2000);
+      });
+    },
+    replyToMessage(message) {
+      alert(`الرد على: ${message.text}`);
+    },
+    deleteMessage(index) {
+      this.$emit("delete-message", index);
+    },
+    closeMenu() {
+      this.activeMenu = null;
+    },
+  },
+  directives: {
+    clickOutside: {
+      beforeMount(el, binding) {
+        el.clickOutsideEvent = (event) => {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value();
+          }
+        };
+        document.body.addEventListener("click", el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener("click", el.clickOutsideEvent);
+      },
+    },
+  },
+};
+</script>
+<style scoped>
+.right-side .chatBx p.date {
+  top: -10%;
+  width: fit-content;
+}
+.right-side .chatBx .msg p {
+  max-width: 65%;
+  background: #dcf8c6;
+}
+
+.right-side .chatBx .msg-me p::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  border-top: 10px solid #dcf8c6;
+  border-left: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid #dcf8c6;
+}
+
+.right-side .chatBx .msg-me {
+  justify-content: flex-end;
+}
+
+.right-side .chatBx .msg-frnd {
+  justify-content: flex-start;
+}
+
+.right-side .chatBx .msg-frnd p {
+  background: #fff;
+  text-align: left;
+}
+
+.right-side .chatBx .msg-frnd p::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: unset;
+  right: -10px;
+  border-top: 10px solid #fff;
+  border-left: 10px solid #fff;
+  border-bottom: 10px solid transparent;
+  border-right: 10px solid transparent;
+}
+</style>
