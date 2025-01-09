@@ -1,13 +1,15 @@
 <template>
   <div class="col-12 col-md-4 chatResponsive px-0">
-    <div class="left-side pt-2 bg-secondary-subtle">
-      <div class="inputSearch w-100 mb-2 text-center position-relative">
+    <div class="left-side bg-secondary-subtle">
+      <div
+        class="inputSearch w-100 mb-2 text-center position-relative d-flex justify-content-center align-items-center"
+      >
         <input
           type="text"
           placeholder="... Search Chat"
           v-model="searchQuery"
           style="outline: none"
-          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary h-25"
+          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary"
         />
         <i
           class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary position-absolute"
@@ -387,13 +389,17 @@ export default {
 .left-side {
   height: 95vh;
 }
+.left-side .inputSearch {
+  height: 8vh;
+}
 .left-side .inputSearch .searchIcon {
   right: 8%;
-  top: 28%;
+  top: 50%;
+  transform: translate(0%, -50%);
 }
 .left-side .inputSearch input {
   width: 90%;
-  transition: all 0.3s;
+  height: 70%;
 }
 .left-side .inputSearch input::placeholder {
   font-size: 14px;

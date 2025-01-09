@@ -88,7 +88,7 @@ export default {
       });
     },
     replyToMessage(message) {
-      alert(`الرد على: ${message.text}`);
+      alert(`Reply : ${message.text}`);
     },
     deleteMessage(index) {
       this.$emit("delete-message", index);
