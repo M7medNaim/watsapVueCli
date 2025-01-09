@@ -1,6 +1,6 @@
 <template>
   <div class="col-0 col-md-8 boxChat px-0" v-if="selectedChat">
-    <div class="right-side" style="background-color: #efddd5; height: 95vh">
+    <div class="right-side" style="height: 95vh">
       <div
         class="header position-relative bg-secondary-subtle px-2 border-1 border-end border-secondary-subtle"
       >
@@ -240,9 +240,6 @@ export default {
 
 .right-side .chatBx {
   height: calc(87vh - 60px);
-  background-image: url("../../public/img/pattern.png");
-  background-size: contain;
-  background-position: center;
 }
 
 .right-side .chatBx .menu {
