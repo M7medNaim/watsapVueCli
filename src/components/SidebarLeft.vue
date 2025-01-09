@@ -1,7 +1,7 @@
 <template>
   <div class="col-12 col-md-4 chatResponsive px-0">
     <div class="left-side pt-2 bg-secondary-subtle">
-      <div class="inputSearch w-100 mb-2 mt-4 text-center position-relative">
+      <div class="inputSearch w-100 mb-2 text-center position-relative">
         <input
           type="text"
           placeholder="... Search Chat"

@@ -1,9 +1,12 @@
 <template>
   <header class="w-100 bg-white">
-    <div class="row">
-      <div class="col-6 close">
-        <button aria-label="close button" class="border-0 bg-transparent">
-          <i class="fa-solid fa-x pe-4 pt-2 text-secondary fs-6"></i>
+    <div class="row h-100">
+      <div class="col-12 close h-100">
+        <button
+          aria-label="close button"
+          class="border-0 bg-transparent h-100 m-auto"
+        >
+          <i class="fa-solid fa-x pe-3 text-secondary fs-6"></i>
         </button>
       </div>
     </div>

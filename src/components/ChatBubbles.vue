@@ -17,29 +17,31 @@
     >
       Message copied!
     </div>
-    <p
-      class="position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
+    <div
+      class="textMessage position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
     >
       {{ message.text }} <br />
       <button
-        class="border-0 bg-transparent position-absolute top-0 fs-6"
+        class="buttonMenu border-0 bg-transparent position-absolute top-0 fs-6"
         @click.stop="toggleMenu(index)"
         v-click-outside="closeMenu"
       >
         <i class="fa-solid fa-ellipsis-vertical text-secondary"></i>
       </button>
       <span class="d-block mt-1 opacity-50 fst-normal">{{ message.time }}</span>
-    </p>
-    <!--  -->
-    <div
-      v-if="activeMenu === index"
-      class="menu-list position-absolute bg-light border p-2 rounded shadow-sm z-3 bottom-100"
-    >
-      <ul class="list-unstyled mb-0 m-auto px-2 lh-lg">
-        <li><a href="#" @click.prevent="copyMessage(message)">copy</a></li>
-        <li><a href="#" @click.prevent="replyToMessage(message)">reply</a></li>
-        <li><a href="#" @click.prevent="deleteMessage(index)">delete</a></li>
-      </ul>
+      <!-- menu list -->
+      <div
+        v-if="activeMenu === index"
+        class="menu-list position-absolute bg-light border rounded shadow-sm z-3 bottom-100"
+      >
+        <ul class="list-unstyled mb-0 m-auto px-2 lh-lg">
+          <li><a href="#" @click.prevent="copyMessage(message)">copy</a></li>
+          <li>
+            <a href="#" @click.prevent="replyToMessage(message)">reply</a>
+          </li>
+          <li><a href="#" @click.prevent="deleteMessage(index)">delete</a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -118,12 +120,13 @@ export default {
   top: -10%;
   width: fit-content;
 }
-.right-side .chatBx .msg p {
+
+.right-side .chatBx .msg .textMessage {
   max-width: 65%;
   background: #dcf8c6;
 }
 
-.right-side .chatBx .msg-me p::before {
+.right-side .chatBx .msg-me .textMessage::before {
   content: "";
   position: absolute;
   top: 0;
@@ -137,17 +140,31 @@ export default {
 .right-side .chatBx .msg-me {
   justify-content: flex-end;
 }
+/* icon menu */
+.right-side .chatBx .msg-me .buttonMenu {
+  right: 0 !important;
+}
+.right-side .chatBx .msg-frnd .buttonMenu {
+  left: 0 !important;
+}
+/* menu list */
+.right-side .chatBx .msg-me .menu-list {
+  right: 0% !important;
+}
+.right-side .chatBx .msg-frnd .menu-list {
+  left: 0% !important;
+}
 
 .right-side .chatBx .msg-frnd {
   justify-content: flex-start;
 }
 
-.right-side .chatBx .msg-frnd p {
+.right-side .chatBx .msg-frnd .textMessage {
   background: #fff;
   text-align: left;
 }
 
-.right-side .chatBx .msg-frnd p::before {
+.right-side .chatBx .msg-frnd .textMessage::before {
   content: "";
   position: absolute;
   top: 0;
