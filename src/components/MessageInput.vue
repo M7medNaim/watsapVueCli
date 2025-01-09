@@ -8,6 +8,7 @@
           <button
             type="submit"
             @click="toggleEmoji"
+            v-click-outside="closeEmoji"
             class="border-0 bg-transparent"
             aria-label="Emojis"
           >
@@ -28,16 +29,16 @@
                 <span @click="addEmoji('😍')">😍</span>
               </div>
               <div class="col-1 ms-2">
-                <span @click="addEmoji('😍')">😍</span>
+                <span @click="addEmoji('😅')">😅</span>
               </div>
               <div class="col-1 ms-2">
-                <span @click="addEmoji('😍')">😍</span>
-              </div>
-              <div class="col-1 ms-2">
-                <span @click="addEmoji('😂')">😂</span>
+                <span @click="addEmoji('😊')">😊</span>
               </div>
               <div class="col-1 ms-2">
                 <span @click="addEmoji('😂')">😂</span>
+              </div>
+              <div class="col-1 ms-2">
+                <span @click="addEmoji('😄')">😄</span>
               </div>
               <div class="col-1 ms-2">
                 <span @click="addEmoji('😂')">😂</span>
@@ -49,7 +50,7 @@
                 <span @click="addEmoji('😢')">😢</span>
               </div>
               <div class="col-1 ms-2">
-                <span @click="addEmoji('😢')">😢</span>
+                <span @click="addEmoji('😇')">😇</span>
               </div>
               <div class="col-1 ms-2">
                 <span @click="addEmoji('😢')">😢</span>
@@ -58,7 +59,7 @@
                 <span @click="addEmoji('😡')">😡</span>
               </div>
               <div class="col-1 ms-2">
-                <span @click="addEmoji('😡')">😡</span>
+                <span @click="addEmoji('😁')">😁</span>
               </div>
               <div class="col-1 ms-2">
                 <span @click="addEmoji('😡')">😡</span>
@@ -144,6 +145,24 @@ export default {
     addEmoji(emoji) {
       this.newMessage += emoji;
       this.isEmojiVisible = false;
+    },
+    closeEmoji() {
+      this.isEmojiVisible = false;
+    },
+  },
+  directives: {
+    clickOutside: {
+      beforeMount(el, binding) {
+        el.clickOutsideEvent = (event) => {
+          if (!(el === event.target || el.contains(event.target))) {
+            binding.value();
+          }
+        };
+        document.body.addEventListener("click", el.clickOutsideEvent);
+      },
+      unmounted(el) {
+        document.body.removeEventListener("click", el.clickOutsideEvent);
+      },
     },
   },
 };

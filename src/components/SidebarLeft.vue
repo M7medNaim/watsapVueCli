@@ -22,7 +22,11 @@
           :class="{ active: chat.isActive }"
         >
           <div class="imgBx position-relative overflow-hidden h-25 me-2">
-            <img :src="chat.img" alt="" class="rounded-circle w-100 h-100" />
+            <img
+              :src="chat.img"
+              alt="user image"
+              class="rounded-circle w-100 h-100"
+            />
           </div>
           <div class="details position-relative w-100">
             <div class="head pe-2 d-flex justify-content-between">

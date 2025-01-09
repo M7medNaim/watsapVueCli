@@ -12,7 +12,7 @@
               <div class="user-imgBx">
                 <img
                   :src="selectedChat.img"
-                  alt=""
+                  alt="user image"
                   class="img-fluid rounded-circle w-100 h-100"
                 />
               </div>

@@ -5,7 +5,7 @@
     اليوم
   </p>
   <div
-    class="msg position-relative w-100 d-flex my-1"
+    class="msg position-relative w-100 d-flex my-1 pb-2"
     v-for="(message, index) in filteredMessages"
     :key="index"
     :class="message.type"
