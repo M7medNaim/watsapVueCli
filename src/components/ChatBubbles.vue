@@ -11,13 +11,6 @@
     :class="message.type"
   >
     <div
-      v-if="message.isCopied"
-      class="copy-message position-absolute bg-secondary-subtle py-1 px-2 rounded-1"
-      style="top: -35%; font-size: 14px"
-    >
-      Message copied!
-    </div>
-    <div
       class="textMessage position-relative text-start px-3 py-2 start-0 rounded-2 fst-normal text-break text-wrap lh-base"
     >
       {{ message.text }} <br />
@@ -41,6 +34,12 @@
           </li>
           <li><a href="#" @click.prevent="deleteMessage(index)">delete</a></li>
         </ul>
+      </div>
+      <div
+        v-if="message.isCopied"
+        class="copy-message position-absolute bg-secondary-subtle py-1 px-2 rounded-1 bottom-100 text-center"
+      >
+        !Message copied
       </div>
     </div>
   </div>
@@ -153,6 +152,18 @@ export default {
 }
 .right-side .chatBx .msg-frnd .menu-list {
   left: 0% !important;
+}
+/* copy message */
+.right-side .chatBx .msg .copy-message {
+  min-width: fit-content;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.right-side .chatBx .msg-frnd .copy-message {
+  left: 0% !important;
+}
+.right-side .chatBx .msg-me .copy-message {
+  right: 0% !important;
 }
 
 .right-side .chatBx .msg-frnd {

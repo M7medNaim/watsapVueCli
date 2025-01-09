@@ -2,7 +2,7 @@
   <div class="chat-input w-100 position-relative bg-body-secondary p-2">
     <div class="row m-0 p-0">
       <div
-        class="col-2 col-md-1 d-flex justify-content-start align-items-center pt-1"
+        class="col-2 col-md-1 d-flex justify-content-center align-items-center pt-1"
       >
         <div class="emoje">
           <button
@@ -67,7 +67,7 @@
           </div>
         </div>
         <!-- upload_file Icon -->
-        <div class="upload_file cursor-pointer">
+        <div class="upload_file cursor-pointer d-block position-relative">
           <label for="file" class="upload-label">
             <i
               class="fa-solid fa-paperclip upload-icon fs-4 text-body-secondary"
