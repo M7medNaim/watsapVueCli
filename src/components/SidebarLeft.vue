@@ -2,7 +2,7 @@
   <div class="col-12 col-md-4 chatResponsive px-0">
     <div class="left-side bg-secondary-subtle">
       <div
-        class="inputSearch w-100 mb-2 text-center position-relative d-flex justify-content-center align-items-center"
+        class="inputSearch w-100 text-center position-relative d-flex justify-content-center align-items-center"
       >
         <input
           type="text"
@@ -399,7 +399,6 @@ export default {
 }
 .left-side .inputSearch input {
   width: 90%;
-  height: 70%;
 }
 .left-side .inputSearch input::placeholder {
   font-size: 14px;
