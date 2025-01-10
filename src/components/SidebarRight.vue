@@ -5,7 +5,7 @@
         class="header position-relative bg-secondary-subtle px-2 border-1 border-end border-secondary-subtle"
       >
         <div class="row h-100">
-          <div class="col-4 h-100">
+          <div class="col-4 h-100 pe-4">
             <div
               class="user-details d-flex justify-content-start align-items-center gap-2 h-100"
             >
@@ -31,9 +31,9 @@
                   type="text"
                   name="searchChat"
                   id="searchChat"
-                  class="ms-3 border-0 rounded-1 py-1 px-2 fs-6 w-100 ms-5"
+                  class="ms-3 border-0 py-1 px-2 fs-6 w-100 ms-5 bg-transparent border-1 border-bottom border-secondary"
                   v-model="searchQuery"
-                  placeholder="... Search Here"
+                  placeholder="... Search Chat"
                   style="outline: none"
                 />
               </div>
@@ -239,7 +239,7 @@ export default {
 /* chat box */
 
 .right-side .chatBx {
-  height: calc(87vh - 60px);
+  height: calc(92vh - 60px);
 }
 
 .right-side .chatBx .menu {

@@ -1,8 +1,8 @@
 <template>
   <div class="chat-input w-100 position-relative bg-body-secondary p-2">
-    <div class="row m-0 p-0">
+    <div class="row m-0 p-0 justify-content-between align-items-center">
       <div
-        class="col-2 col-md-1 d-flex justify-content-center align-items-center pt-1"
+        class="col-2 d-flex justify-content-start align-items-center gap-3 pt-1"
       >
         <div class="emoje">
           <button
@@ -12,9 +12,7 @@
             class="border-0 bg-transparent"
             aria-label="Emojis"
           >
-            <i
-              class="fa-regular fa-face-smile fs-4 text-body-secondary ms-2"
-            ></i>
+            <i class="fa-regular fa-face-smile fs-4 text-body-secondary"></i>
           </button>
           <!-- all Emojis -->
           <div
@@ -84,9 +82,43 @@
             />
           </form>
         </div>
+        <div class="Clipboard">
+          <button
+            @click="toggleClipboard"
+            v-click-outside="closeClipboard"
+            aria-label="Clipboard"
+            class="border-0 bg-transparent fs-4 text-body-secondary pb-1"
+          >
+            <i class="fa-regular fa-clipboard"></i>
+          </button>
+          <div
+            v-if="isClipboardVisible"
+            class="listClipboard row bg-body-tertiary border border-1 border-dark-subtle text-start w-25 position-absolute fs-6 bottom-100 text-break text-wrap"
+          >
+            <div
+              class="col-12 border-bottom border-secondary-subtle w-100 d-flex justify-content-between align-items-center py-2 bg-secondary-subtle"
+            >
+              <i class="fa-solid fa-xmark fs-5"></i>
+              <span>Close</span>
+              <i class="fa-regular fa-clipboard fs-5"></i>
+            </div>
+            <div
+              class="col-12 border-bottom border-secondary-subtle"
+              @click="addClipboard('Hi')"
+            >
+              <span>Hi</span>
+            </div>
+            <div
+              class="col-12 border-bottom border-light-subtle"
+              @click="addClipboard('hi')"
+            >
+              <span>hi</span>
+            </div>
+          </div>
+        </div>
       </div>
       <!-- input send message -->
-      <div class="col-9 col-md-10">
+      <div class="col-9">
         <input
           type="text"
           ref="messageInput"
@@ -98,7 +130,7 @@
         />
       </div>
       <!-- icon send & voice Message -->
-      <div class="col-1 d-flex justify-content-center align-items-center pt-1">
+      <div class="col-1 d-flex justify-content-center align-items-center">
         <button
           type="submit"
           class="submitMsg position-relative border-0 bg-transparent"
@@ -130,6 +162,7 @@ export default {
     return {
       newMessage: "",
       isEmojiVisible: false,
+      isClipboardVisible: false,
     };
   },
   methods: {
@@ -148,6 +181,16 @@ export default {
     },
     closeEmoji() {
       this.isEmojiVisible = false;
+    },
+    toggleClipboard() {
+      this.isClipboardVisible = !this.isClipboardVisible;
+    },
+    addClipboard(Clipboard) {
+      this.newMessage += Clipboard;
+      this.isEmojiVisible = false;
+    },
+    closeClipboard() {
+      this.isClipboardVisible = false;
     },
   },
   directives: {
@@ -182,5 +225,9 @@ export default {
 /* chat input */
 .right-side .chat-input {
   height: 60px;
+}
+.right-side .listClipboard {
+  cursor: pointer;
+  right: 1%;
 }
 </style>

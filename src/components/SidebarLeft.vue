@@ -1,19 +1,36 @@
 <template>
   <div class="col-12 col-md-4 chatResponsive px-0">
-    <div class="left-side bg-secondary-subtle">
+    <div class="left-side bg-secondary-subtle vh-100">
       <div
         class="inputSearch w-100 text-center position-relative d-flex justify-content-center align-items-center"
       >
-        <input
-          type="text"
-          placeholder="... Search Chat"
-          v-model="searchQuery"
-          style="outline: none"
-          class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary"
-        />
-        <i
-          class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary position-absolute"
-        ></i>
+        <div class="row d-flex justify-content-start align-items-center w-100">
+          <div class="col-1">
+            <button class="bg-transparent border-0">
+              <i class="fa fa-window-restore fs-5 pt-2 ps-1 text-black-50"></i>
+            </button>
+          </div>
+          <div class="col-11 ps-4">
+            <input
+              type="text"
+              placeholder="... Search Conversation"
+              v-model="searchQuery"
+              style="outline: none"
+              class="border border-1 border-white py-2 pe-5 ps-2 rounded-2 bg-body text-secondary w-100"
+            />
+            <i
+              class="fa-solid fa-magnifying-glass searchIcon fs-5 text-secondary position-absolute"
+            ></i>
+            <button
+              v-if="searchQuery"
+              @click="clearSearch"
+              class="btnCloseSearch bg-transparent border-0 position-absolute text-danger d-flex justify-content-center align-items-center gap-1 fs-5"
+            >
+              <span>close search</span>
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+          </div>
+        </div>
       </div>
       <div class="chat-list position-relative overflow-auto h-100">
         <div
@@ -376,6 +393,9 @@ export default {
         }
       }
     },
+    clearSearch() {
+      this.searchQuery = "";
+    },
   },
   mounted() {
     if (this.$refs.labelModal) {
@@ -386,19 +406,21 @@ export default {
 </script>
 
 <style scoped>
-.left-side {
-  height: 95vh;
-}
 .left-side .inputSearch {
   height: 8vh;
 }
 .left-side .inputSearch .searchIcon {
-  right: 8%;
+  right: 13%;
   top: 50%;
   transform: translate(0%, -50%);
 }
-.left-side .inputSearch input {
-  width: 90%;
+.left-side .inputSearch .btnCloseSearch {
+  left: 5%;
+  top: 50%;
+  transform: translate(0%, -50%);
+}
+.left-side .inputSearch .btnCloseSearch span {
+  font-size: 12px;
 }
 .left-side .inputSearch input::placeholder {
   font-size: 14px;

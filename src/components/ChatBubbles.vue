@@ -116,7 +116,7 @@ export default {
 </script>
 <style scoped>
 .right-side .chatBx p.date {
-  top: -9%;
+  top: -8%;
   width: fit-content;
 }
 

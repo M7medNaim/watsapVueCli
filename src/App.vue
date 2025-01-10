@@ -1,7 +1,7 @@
 <template>
   <main class="overflow-hidden h-100 w-100">
-    <div id="app">
-      <HeaderComponent />
+    <div id="app vh-100">
+      <!-- <HeaderComponent /> -->
       <div class="app">
         <div class="row mx-0">
           <SidebarLeft @select-chat="setSelectedChat" ref="leftSidebar" />
@@ -21,14 +21,12 @@
 </template>
 
 <script>
-import HeaderComponent from "./components/HeaderComponent.vue";
 import SidebarLeft from "./components/SidebarLeft.vue";
 import SidebarRight from "./components/SidebarRight.vue";
 
 export default {
   name: "App",
   components: {
-    HeaderComponent,
     SidebarLeft,
     SidebarRight,
   },
@@ -73,9 +71,6 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
 
 /* global style  */
-main .app {
-  height: 95vh;
-}
 a {
   text-decoration: none !important;
   color: #000 !important;
