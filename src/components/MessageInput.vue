@@ -99,7 +99,7 @@
               class="col-12 border-bottom border-secondary-subtle w-100 d-flex justify-content-between align-items-center py-2 bg-secondary-subtle"
             >
               <i class="fa-solid fa-xmark fs-5"></i>
-              <span>Close</span>
+              <!-- <span>Close</span> -->
               <i class="fa-regular fa-clipboard fs-5"></i>
             </div>
             <div
