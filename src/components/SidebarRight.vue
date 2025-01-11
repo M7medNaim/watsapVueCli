@@ -20,7 +20,7 @@
             </div>
           </div>
           <div
-            class="col-8 search_list d-flex justify-content-end align-items-center gap-3 fs-5 h-100"
+            class="col-8 search_list d-flex justify-content-end align-items-center ps-4 gap-3 fs-5 h-100"
           >
             <div id="bxSearch" class="d-flex">
               <div
@@ -73,7 +73,7 @@
         <div
           ref="menu"
           v-click-outside="closeMenu"
-          class="menu align-items-center text-end bg-secondary-subtle rounded-2 lh-base position-fixed z-3"
+          class="menu align-items-center text-end bg-secondary-subtle shadow-lg rounded-2 lh-base position-fixed z-3"
           :class="{ 'show-list': showListVisible }"
         >
           <ul class="list-unstyled p-0">
@@ -243,7 +243,7 @@ export default {
 }
 
 .right-side .chatBx .menu {
-  top: 12.5%;
+  top: 7vh;
   left: 1%;
   opacity: 0;
   visibility: hidden;

@@ -5,12 +5,12 @@
         class="inputSearch w-100 text-center position-relative d-flex justify-content-center align-items-center"
       >
         <div class="row d-flex justify-content-start align-items-center w-100">
-          <div class="col-1">
+          <div class="col-2 col-lg-1">
             <button class="bg-transparent border-0">
               <i class="fa fa-window-restore fs-5 pt-2 ps-1 text-black-50"></i>
             </button>
           </div>
-          <div class="col-11 ps-4">
+          <div class="col-10 col-lg-11 ps-4">
             <input
               type="text"
               placeholder="... Search Conversation"

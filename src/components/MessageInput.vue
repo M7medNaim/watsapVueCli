@@ -2,7 +2,7 @@
   <div class="chat-input w-100 position-relative bg-body-secondary p-2">
     <div class="row m-0 p-0 justify-content-between align-items-center">
       <div
-        class="col-2 d-flex justify-content-start align-items-center gap-3 pt-1"
+        class="col-3 col-lg-2 d-flex justify-content-start align-items-center gap-3 pt-1"
       >
         <div class="emoje">
           <button
@@ -118,7 +118,7 @@
         </div>
       </div>
       <!-- input send message -->
-      <div class="col-9">
+      <div class="col-8 col-lg-9">
         <input
           type="text"
           ref="messageInput"
